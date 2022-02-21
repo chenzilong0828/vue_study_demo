@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        /* createApp表示创建一个vue应用，存储到app变量中
+        传入的参数表示，这个应用最外层的组件，应该如何展示 */
+
+        // slot的使用场景：自己开发组件时会用到
+
+        //slot中使用的数据，作用域的问题：
+        // 父模板里调用的数据属性，使用的都是父模板里的数据
+        // 子模板里调用的数据属性，使用的都是子模板里的数据
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    btnName: "提交哦",
+                };
+            },
+            template: `
+                <div>
+                    <test>
+                        <div>{{btnName}}</div>
+                    </test>
+                    <test>
+                        <button>{{btnName}}</button>
+                    </test>
+                    <test></test>
+                    <hr />
+                    <hr />
+                    <hr />
+                    <layout>
+                        <template v-slot:header>
+                            <div>具名插槽</div>
+                            <div>header</div>
+                        </template>
+                        <template v-slot:footer>
+                            <div>footer</div>
+                        </template>
+                    </layout>
+                </div>
+            `,
+        });
+        app.component("test", {
+            methods: {
+                handleClick() {
+                    console.log("slot插槽真好用");
+                },
+            },
+            template: `
+                <div>
+                    <input type="text" />
+                    <span @click="handleClick()">
+                        <slot>
+                            这是没传插槽时，插槽默认展示的    
+                        </slot>
+                    </span>
+                </div>
+            `,
+        });
+
+        //具名插槽
+        app.component("layout", {
+            template: `
+                <slot name="header"></slot>
+                <div>content</div>
+                <slot name="footer"></slot>
+            `,
+        });
+
+        //vm代表的是vue应用的根组件，vm是viewmodel，即视图数据连接层。
+        const vm = app.mount("#root");
+        // 如果要修改的话，可以使用this.$data.message
+    </script>
+</html>

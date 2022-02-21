@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        /* createApp表示创建一个vue应用，存储到app变量中
+        传入的参数表示，这个应用最外层的组件，应该如何展示 */
+        //局部组件，要注册之后才可以使用，性能比较高。建议大写开头，驼峰式命名。
+
+        const Counter = {
+            data() {
+                return {
+                    count: 0,
+                };
+            },
+            template: `
+                <div @click="count += 1">
+                    {{count}}    
+                </div>
+            `,
+        };
+        const HelloWorld = {
+            template: `
+                <div>hello world</div>
+            `,
+        };
+        const app = Vue.createApp({
+            components: {
+                Counter,
+                HelloWorld,
+            },
+            template: `
+                <div> 
+                    <Counter/>
+                    <HelloWorld/>
+                </div> 
+            `,
+        });
+
+        //vm代表的是vue应用的根组件，vm是viewmodel，即视图数据连接层。
+        const vm = app.mount("#root");
+        // 如果要修改的话，可以使用this.$data.message
+    </script>
+</html>

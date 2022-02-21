@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    currentItem: "test1",
+                };
+            },
+            methods: {
+                handleClick() {
+                    this.currentItem == "test1" ? (this.currentItem = "test2") : (this.currentItem = "test1");
+                },
+            },
+            template: `
+                <div>
+                    <component :is="currentItem"></component>
+                    <button @click="handleClick">切换</button></button>
+                </div>
+            `,
+        });
+        app.component("test1", {
+            template: `
+                <input type="text" />
+            `,
+        });
+        app.component("test2", {
+            template: `
+                <div>hello world</div>
+            `,
+        });
+
+        const vm = app.mount("#root");
+    </script>
+</html>

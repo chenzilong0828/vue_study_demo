@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        /* 
+             ======================字符串反转功能=======================
+             const app = Vue.createApp({
+                 data() {
+                     return {
+                         content: "hello world",
+                     };
+                 },
+                 methods: {
+                     handleClick() {
+                         this.content = this.content.split("").reverse().join("");
+                     },
+                 },
+                 template: `
+        	<div>
+        		{{content}}
+                         <button @click="handleClick()">反转</button>
+        	</div>
+        `,
+        });
+        app.mount("#root"); */
+
+        //v-if的显示与隐藏
+        const app = Vue.createApp({
+            data() {
+                return {
+                    show: true,
+                    content: "hello world",
+                };
+            },
+            methods: {
+                handleClick() {
+                    this.show = !this.show;
+                },
+            },
+            template: `
+        	<div>
+        		<span v-if="show">{{content}}</span>
+                <button @click="handleClick()">显示隐藏</button>
+        	</div>
+        `,
+        });
+        app.mount("#root");
+    </script>
+</html>

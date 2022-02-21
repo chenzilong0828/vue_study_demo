@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        /* createApp表示创建一个vue应用，存储到app变量中
+        传入的参数表示，这个应用最外层的组件，应该如何展示 */
+        //Vue不支持子组件直接更改父组件的数据
+        const app = Vue.createApp({
+            data() {
+                return {
+                    num: 0,
+                };
+            },
+            template: `
+                <div>
+                    <test msg="我就是试一试"></test>
+                </div>
+            `,
+        });
+        app.component("test", {
+            mounted() {
+                console.log(this.$attrs);
+            },
+            template: `
+                <div :msg="$attrs">None-Props属性</div>
+                <div :msg="$attrs.msg">None-Props属性</div>
+                <div :msg="$attrs">None-Props属性</div>
+            `,
+        });
+
+        //vm代表的是vue应用的根组件，vm是viewmodel，即视图数据连接层。
+        const vm = app.mount("#root");
+        // 如果要修改的话，可以使用this.$data.message
+    </script>
+</html>
