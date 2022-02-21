@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+        <style>
+            .pink {
+                color: pink;
+            }
+            .skyblue {
+                color: skyblue;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        /* createApp表示创建一个vue应用，存储到app变量中
+        传入的参数表示，这个应用最外层的组件，应该如何展示 */
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hello world",
+                    classString: "red",
+                    classObject: { pink: true, skyblue: false },
+                    classArray: ["pink", "skyblue", { brown: true }],
+                    styleObject: {
+                        color: "orange",
+                    },
+                };
+            },
+            template: `
+                <div>
+                    <div :class="classArray">{{message}}</div>
+                    <div :style="styleObject">{{message}}</div>
+                </div> 
+            `,
+        });
+        //vm代表的是vue应用的根组件，vm是viewmodel，即视图数据连接层。
+        const vm = app.mount("#root");
+        // 如果要修改的话，可以使用this.$data.message
+    </script>
+</html>

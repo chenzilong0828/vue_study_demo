@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    list: [],
+                    inputValue: "",
+                };
+            },
+            methods: {
+                handleAddClick() {
+                    this.list.push(this.inputValue);
+                    this.inputValue = "";
+                },
+            },
+
+            /* <input type="text" v-model="name"/>
+            警告，vue3开始，不能加文档中不存在的属性！！！！！！
+            vue@next:8035 [Vue warn]: Property "name" was accessed during render but is not defined on instance. at <App> */
+            template: `
+                <div> 
+                    <ul>
+                        <todo-item v-for="(item,index) of list" v-bind:content="item" v-bind:index="index"></todo-item>
+                    </ul>
+                    <div>
+                        <input type="text" v-model="inputValue"/>
+                        <button @click="handleAddClick()">增加</button>    
+                    </div>
+                </div>
+            `,
+        });
+        app.component("todo-item", {
+            props: ["content", "index"],
+            template: `
+                <div>
+                    {{index}}---{{content}}
+                </div>
+            `,
+        });
+        app.mount("#root");
+    </script>
+</html>

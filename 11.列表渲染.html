@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        /* createApp表示创建一个vue应用，存储到app变量中
+        传入的参数表示，这个应用最外层的组件，应该如何展示 */
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: "hello world",
+                    list: ["hello", "world", "chen"],
+                    listObject: {
+                        newName: "chen",
+                        lastName: "xiao",
+                    },
+                };
+            },
+            methods: {
+                handleAddBtn() {
+                    this.list.push("我是新增的");
+                },
+            },
+            // v-show原理就是通过控制样式中的display来显示隐藏
+            template: `
+                <div>
+                    <div>{{message}}</div>   
+                    <div v-for="(item,index) in list" :key="index">{{item }}</div>          
+                    <div v-for="(value,key) in listObject">{{value}} -- {{key}}"</div>   
+                    <button @click="handleAddBtn()">新增</button>       
+                </div> 
+            `,
+        });
+        //vm代表的是vue应用的根组件，vm是viewmodel，即视图数据连接层。
+        const vm = app.mount("#root");
+        // 如果要修改的话，可以使用this.$data.message
+    </script>
+</html>

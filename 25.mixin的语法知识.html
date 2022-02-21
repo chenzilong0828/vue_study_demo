@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        //mixin混入
+        // 组件 data, methods 优先级高于 mixin data, methods 优先级
+        // 生命周期函数，先执行 mixin 里面的，再执行组件里面的
+        // 自定义的属性，组件种的属性优先级高于 mixin 属性的优先级
+        const myMixin = {
+            data() {
+                return {
+                    msg: "雷猴啊",
+                };
+            },
+            methods: {
+                handleClick() {
+                    console.log("介是mixin里的handleClick啊");
+                },
+            },
+            created() {
+                console.log("介是mixin里的created");
+            },
+        };
+        const app = Vue.createApp({
+            mixins: [myMixin],
+            data() {
+                return {
+                    // msg: "hello 啊",
+                };
+            },
+            methods: {
+                // handleClick() {
+                //     console.log("handleClick");
+                // },
+            },
+            created() {
+                console.log("created");
+            },
+            template: `
+                <div>
+                    {{msg}}
+                    <button @click="handleClick">点击哇</button>
+                </div>
+            `,
+        });
+
+        const vm = app.mount("#root");
+    </script>
+</html>
