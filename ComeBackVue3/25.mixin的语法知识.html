@@ -11,11 +11,14 @@
         <div id="root"></div>
     </body>
     <script>
+        //现在没什么人用mixin啦，因为mixin的可维护性不高，现在vue3都用composition API嘞。
+
         //mixin混入
         // 组件 data, methods 优先级高于 mixin data, methods 优先级
         // 生命周期函数，先执行 mixin 里面的，再执行组件里面的
         // 自定义的属性，组件种的属性优先级高于 mixin 属性的优先级
         const myMixin = {
+            number: 1,
             data() {
                 return {
                     msg: "雷猴啊",
@@ -32,6 +35,8 @@
         };
         const app = Vue.createApp({
             mixins: [myMixin],
+
+            number: 2,
             data() {
                 return {
                     // msg: "hello 啊",
@@ -48,10 +53,35 @@
             template: `
                 <div>
                     {{msg}}
+                    {{this.$options.number}}
                     <button @click="handleClick">点击哇</button>
+                    <child></child>
                 </div>
             `,
         });
+        app.config.optionMergeStrategies.number = (parent, child, vm) => {
+            return parent || child;
+        };
+        app.component("child", {
+            template: `<div>{{msg}}</div>`,
+        });
+
+        //全局的mixin
+        // app.mixin({
+        //     data() {
+        //         return {
+        //             msg: "雷猴啊",
+        //         };
+        //     },
+        //     methods: {
+        //         handleClick() {
+        //             console.log("介是mixin里的handleClick啊");
+        //         },
+        //     },
+        //     created() {
+        //         console.log("介是mixin里的created");
+        //     },
+        // });
 
         const vm = app.mount("#root");
     </script>
