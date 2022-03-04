@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            template: `
+                <div>
+                    {{name}}
+                    {{age[0]}}
+                    {{company}}
+                </div>
+            `,
+            setup(props, context) {
+                //ref函数仅能监听基本类型的变化，不能监听复杂类型的变化（比如对象、数组）
+                //监听复杂类型的变化可以使用reactive函数
+                const { ref, reactive, readonly, toRefs } = Vue;
+                let name = ref("azi");
+                let age = reactive([123]);
+                let dept = reactive({ company: "市场部门" });
+                setTimeout(() => {
+                    name.value = "along";
+                    age[0] = 456;
+                    dept.company = "营销部门";
+                }, 3000);
+                const { company } = toRefs(dept); //toRefs
+                return { name, age, company };
+            },
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>

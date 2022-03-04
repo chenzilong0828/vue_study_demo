@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        //vue plugin
+        //对数据做校验的插件
+        const app = Vue.createApp({
+            data() {
+                return {
+                    name: "azi",
+                    age: 26,
+                };
+            },
+            rules: {
+                age: {
+                    validate: (age) => {
+                        return age > 20;
+                    },
+                    message: "too young",
+                },
+                name: {
+                    validate: (name) => {
+                        return name.length >= 4;
+                    },
+                    message: "名字太长了",
+                },
+            },
+            template: `
+                <div>
+                    name:{{name}},age:{{age}}
+                </div>
+            `,
+        });
+        const validatorPlugin = (app, options) => {
+            app.mixin({
+                mounted() {
+                    //$options用来获取定义在data外的数据和方法
+                    console.log(this.$options.rules);
+                    for (var key in this.$options.rules) {
+                        const item = this.$options.rules[key];
+                        console.log(item);
+                        //参数1：要监听的对象;
+                        //参数2：监听的函数，函数中有两个参数，变化后的新值，变化之前的旧值
+                        this.$watch(key, (newValue, oldValue) => {
+                            console.log(newValue, oldValue);
+                            const result = item.validate(newValue);
+                            if (!result) {
+                                console.log(item.message);
+                            }
+                        });
+                    }
+                },
+            });
+        };
+        app.use(validatorPlugin);
+        const vm = app.mount("#root");
+    </script>
+</html>
