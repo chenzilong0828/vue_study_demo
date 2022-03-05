@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            methods: {
+                handleChange() {
+                    alert("change了");
+                },
+            },
+            template: `
+                <div>
+                    <child @change="handleChange">parent</child>
+                </div>
+            `,
+        });
+        //vue3中的compositionAPI中，setup里面，废弃了methods,computed这种写法了。
+        app.component("child", {
+            template: `
+                <div @click="handleClick">1232132</div>
+            `,
+            setup(props, context) {
+                //执行渲染工作的是h函数，本质上也就是createElement函数！
+                const { h } = Vue;
+                const { attrs, slots, emit } = context;
+                // console.log(attrs);//None-attrs,意思就是，当子组件没有接收父组件传递过来的参数时，子组件默认接收的attrs
+                console.log(slots.default());
+                /* createElment函数接受三个参数，分别是：
+                参数一：tag（标签名）、组件的选项对象、函数（必选）；
+                参数二：一个对象，标签的属性对应的数据（可选）；
+                参数三：子级虚拟节点，字符串形式或数组形式，子级虚拟节点也需要使用createElement构建。 */
+                // return () => h("div", {}, slots.default());
+                function handleClick() {
+                    emit("change");
+                }
+                return { handleClick };
+            },
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>

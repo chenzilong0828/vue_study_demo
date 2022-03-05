@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        //对list操作内容进行封装
+        const listReactiveEffect = (inputVal) => {
+            const { reactive } = Vue;
+            const list = reactive([]);
+            const pushList = (item) => {
+                list.push(item);
+                inputVal.value = "";
+            };
+            return {
+                list,
+                pushList,
+            };
+        };
+        //关于对inputValue操作内容进行封装
+        const inputValueRefEffect = () => {
+            const { ref } = Vue;
+            const inputValue = ref("");
+            const handleInputValueChange = (e) => {
+                inputValue.value = e.target.value;
+            };
+            return {
+                inputValue,
+                handleInputValueChange,
+            };
+        };
+        //这一节，我们对todolist进行操作内容的封装
+        const app = Vue.createApp({
+            setup(props, context) {
+                const { inputValue, handleInputValueChange } = inputValueRefEffect();
+                const { list, pushList } = listReactiveEffect(inputValue);
+                return {
+                    list,
+                    pushList,
+                    inputValue,
+                    handleInputValueChange,
+                };
+            },
+            template: `
+                <div>
+                    <div>
+                        <input type="text" :value="inputValue" @input="handleInputValueChange"/>
+                        <button @click="()=>{pushList(inputValue)}">添加</button>
+                    </div>
+                    <ul>
+                        <li v-for="(item,index) in list" :key="index">{{item}}</li>
+                    </ul>
+                </div>
+            `,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>

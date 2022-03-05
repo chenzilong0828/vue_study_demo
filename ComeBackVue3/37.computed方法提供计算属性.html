@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            setup(props, context) {
+                const { reactive, toRefs, computed } = Vue;
+                const data = reactive({ count: 0 });
+                const { count } = toRefs(data);
+                console.log(count);
+                const handleAddFunc = () => {
+                    count.value += 1;
+                };
+                let countAddFive = computed({
+                    get: () => {
+                        return count.value + 5;
+                    },
+                    set: (param) => {
+                        count.value = param - 5;
+                    },
+                });
+                setTimeout(() => {
+                    countAddFive.value = 100;
+                }, 2000);
+                return { count, countAddFive, handleAddFunc };
+            },
+            template: `
+                <div>
+                    <span @click="handleAddFunc">{{count}} -- {{countAddFive}}</span>
+                </div>
+            `,
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>

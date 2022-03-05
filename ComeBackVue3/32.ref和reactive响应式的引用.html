@@ -22,6 +22,8 @@
             setup(props, context) {
                 //ref函数仅能监听基本类型的变化，不能监听复杂类型的变化（比如对象、数组）
                 //监听复杂类型的变化可以使用reactive函数
+                //reactive参数必须是对象(json/arr)
+                //如果给reactive传递了其他对象,默认情况下修改对象,界面不会自动更新,如果想更新,可以通过重新赋值的方式.
                 const { ref, reactive, readonly, toRefs } = Vue;
                 let name = ref("azi");
                 let age = reactive([123]);

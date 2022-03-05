@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            template: `
+                <div>
+                    {{name}}--{{age}}
+                </div>
+            `,
+            //Vue3响应式数据是通过ES6的Proxy来实现的
+            //Vue2响应式数据是通过defineProPerty实现的
+            setup(props, context) {
+                const { reactive, toRefs, toRef } = Vue;
+                const data = reactive({ name: "azi" });
+                //toRefs可以将对象（只能接收rective对象）中的属性变成响应式
+                //正常reactive对象数据也是响应式的，如果用toRefs解构出去会更加方便
+                //toRefs
+                const { name } = toRefs(data);
+                const age = toRef(data, "age");
+                setTimeout(() => {
+                    name.value = "along wa";
+                    age.value = 18;
+                }, 2000);
+                return { name, age };
+            },
+        });
+        const vm = app.mount("#root");
+    </script>
+</html>
