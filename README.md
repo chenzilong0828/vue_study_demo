@@ -1,2 +1,2 @@
 # vue_study_demo
-vue学习点滴记录
+vue3学习点滴记录
